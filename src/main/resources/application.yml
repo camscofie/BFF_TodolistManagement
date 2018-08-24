@@ -3,3 +3,5 @@ server:
 spring:
   jackson:
     default-property-inclusion: non_null
+todoManagementMicroservice:
+  url: https://todo-management.cm.tm.kit.edu
