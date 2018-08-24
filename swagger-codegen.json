@@ -1,0 +1,4 @@
+{
+  "modelPackage": "edu.kit.tm.cm.tlm.tlmuibff.infrastructure.dtos",
+  "apiPackage": "edu.kit.tm.cm.tlm.tlmuibff.infrastructure.apis"
+}
