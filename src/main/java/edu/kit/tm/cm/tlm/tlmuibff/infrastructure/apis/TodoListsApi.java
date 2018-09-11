@@ -16,14 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 import java.util.List;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-08-22T18:44:27.867+02:00")
-
 @Api(value = "TodoLists", description = "the TodoLists API")
-public interface TodoManagementApi {
+public interface TodoListsApi {
 
     @ApiOperation(value = "Creates a new todo for a specific todo list", nickname = "createTodoInListUsingPOST", notes = "", response = Todo.class, tags = {"todo-lists",})
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Created", response = Todo.class),
+            @ApiResponse(code = 400, message = "Todo was not valid"),
             @ApiResponse(code = 404, message = "Todo list not found"),
             @ApiResponse(code = 409, message = "Todo with the same content already exists in this list")})
     @RequestMapping(value = "/todo-lists/{id}/todos",
@@ -41,7 +40,7 @@ public interface TodoManagementApi {
             produces = "application/json",
             consumes = "application/json",
             method = RequestMethod.POST)
-    ResponseEntity<TodoList> createTodoListUsingPOST(@ApiParam(value = "newTodoList", required = true) @Valid @RequestBody TodoListGenericRequest newTodoList);
+    ResponseEntity<TodoList> createTodoListUsingPOST(@ApiParam(value = "newTodoList", required = true) @Valid @RequestBody TodoListCreateRequest newTodoList);
 
 
     @ApiOperation(value = "Deletes a specific todo from a list", nickname = "deleteTodoFromListUsingDELETE", notes = "", tags = {"todo-lists",})
@@ -109,16 +108,29 @@ public interface TodoManagementApi {
     ResponseEntity<List<Todo>> getTodosUsingGET(@ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "Updates a specific todo", nickname = "updateTodoContentUsingPUT", notes = "", response = Todo.class, tags = {"todo-lists",})
+    @ApiOperation(value = "Updates specific fields of an existing todo list", nickname = "patchTodoListUsingPATCH", notes = "", response = TodoList.class, tags = {"todo-lists",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = TodoList.class),
+            @ApiResponse(code = 400, message = "Todo list was not valid"),
+            @ApiResponse(code = 404, message = "Todo list not found")})
+    @RequestMapping(value = "/todo-lists/{id}",
+            produces = "application/json",
+            consumes = "application/json",
+            method = RequestMethod.PATCH)
+    ResponseEntity<TodoList> patchTodoListUsingPATCH(@ApiParam(value = "id", required = true) @PathVariable("id") Long id, @ApiParam(value = "partialTodoList", required = true) @Valid @RequestBody TodoListPatchRequest partialTodoList);
+
+
+    @ApiOperation(value = "Updates specific fields of a todo", nickname = "patchTodoUsingPATCH", notes = "", response = Todo.class, tags = {"todo-lists",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = Todo.class),
+            @ApiResponse(code = 400, message = "Todo was not valid"),
             @ApiResponse(code = 404, message = "Todo list or todo not found"),
             @ApiResponse(code = 409, message = "Todo with the same content already exists in this list")})
     @RequestMapping(value = "/todo-lists/{id}/todos/{number}",
             produces = "application/json",
             consumes = "application/json",
-            method = RequestMethod.PUT)
-    ResponseEntity<Todo> updateTodoContentUsingPUT(@ApiParam(value = "id", required = true) @PathVariable("id") Long id, @ApiParam(value = "number", required = true) @PathVariable("number") Integer number, @ApiParam(value = "updatedTodo", required = true) @Valid @RequestBody TodoUpdateRequest updatedTodo);
+            method = RequestMethod.PATCH)
+    ResponseEntity<Todo> patchTodoUsingPATCH(@ApiParam(value = "id", required = true) @PathVariable("id") Long id, @ApiParam(value = "number", required = true) @PathVariable("number") Integer number, @ApiParam(value = "partialTodo", required = true) @Valid @RequestBody TodoPatchRequest partialTodo);
 
 
     @ApiOperation(value = "Updates an existing todo list", nickname = "updateTodoListUsingPUT", notes = "", response = TodoList.class, tags = {"todo-lists",})
@@ -130,6 +142,19 @@ public interface TodoManagementApi {
             produces = "application/json",
             consumes = "application/json",
             method = RequestMethod.PUT)
-    ResponseEntity<TodoList> updateTodoListUsingPUT(@ApiParam(value = "id", required = true) @PathVariable("id") Long id, @ApiParam(value = "updatedTodoList", required = true) @Valid @RequestBody TodoListGenericRequest updatedTodoList);
+    ResponseEntity<TodoList> updateTodoListUsingPUT(@ApiParam(value = "id", required = true) @PathVariable("id") Long id, @ApiParam(value = "updatedTodoList", required = true) @Valid @RequestBody TodoListUpdateRequest updatedTodoList);
+
+
+    @ApiOperation(value = "Updates a specific todo", nickname = "updateTodoUsingPUT", notes = "", response = Todo.class, tags = {"todo-lists",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = Todo.class),
+            @ApiResponse(code = 400, message = "Todo was not valid"),
+            @ApiResponse(code = 404, message = "Todo list or todo not found"),
+            @ApiResponse(code = 409, message = "Todo with the same content already exists in this list")})
+    @RequestMapping(value = "/todo-lists/{id}/todos/{number}",
+            produces = "application/json",
+            consumes = "application/json",
+            method = RequestMethod.PUT)
+    ResponseEntity<Todo> updateTodoUsingPUT(@ApiParam(value = "id", required = true) @PathVariable("id") Long id, @ApiParam(value = "number", required = true) @PathVariable("number") Integer number, @ApiParam(value = "updatedTodo", required = true) @Valid @RequestBody TodoUpdateRequest updatedTodo);
 
 }

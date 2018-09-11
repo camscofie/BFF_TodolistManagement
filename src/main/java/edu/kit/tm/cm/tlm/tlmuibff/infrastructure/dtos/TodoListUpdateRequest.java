@@ -9,59 +9,59 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * TodoCreateRequest
+ * TodoListUpdateRequest
  */
 @Validated
 @JsonInclude
-public class TodoCreateRequest {
-    @JsonProperty("content")
-    private String content = null;
+public class TodoListUpdateRequest {
+    @JsonProperty("title")
+    private String title = null;
 
-    @JsonProperty("description")
-    private String description = null;
+    @JsonProperty("color")
+    private String color = null;
 
-    public TodoCreateRequest content(String content) {
-        this.content = content;
+    public TodoListUpdateRequest title(String title) {
+        this.title = title;
         return this;
     }
 
     /**
-     * Get content
+     * Get title
      *
-     * @return content
+     * @return title
      **/
     @ApiModelProperty(required = true, value = "")
     @NotNull
 
 
-    public String getContent() {
-        return content;
+    public String getTitle() {
+        return title;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public TodoCreateRequest description(String description) {
-        this.description = description;
+    public TodoListUpdateRequest color(String color) {
+        this.color = color;
         return this;
     }
 
     /**
-     * Get description
+     * HTML hex code
      *
-     * @return description
+     * @return color
      **/
-    @ApiModelProperty(required = true, value = "")
+    @ApiModelProperty(example = "#AABBCC", required = true, value = "HTML hex code")
     @NotNull
 
 
-    public String getDescription() {
-        return description;
+    public String getColor() {
+        return color;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setColor(String color) {
+        this.color = color;
     }
 
 
@@ -73,23 +73,23 @@ public class TodoCreateRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TodoCreateRequest todoCreateRequest = (TodoCreateRequest) o;
-        return Objects.equals(this.content, todoCreateRequest.content) &&
-                Objects.equals(this.description, todoCreateRequest.description);
+        TodoListUpdateRequest todoListUpdateRequest = (TodoListUpdateRequest) o;
+        return Objects.equals(this.title, todoListUpdateRequest.title) &&
+                Objects.equals(this.color, todoListUpdateRequest.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content, description);
+        return Objects.hash(title, color);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TodoCreateRequest {\n");
+        sb.append("class TodoListUpdateRequest {\n");
 
-        sb.append("    content: ").append(toIndentedString(content)).append("\n");
-        sb.append("    description: ").append(toIndentedString(description)).append("\n");
+        sb.append("    title: ").append(toIndentedString(title)).append("\n");
+        sb.append("    color: ").append(toIndentedString(color)).append("\n");
         sb.append("}");
         return sb.toString();
     }

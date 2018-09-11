@@ -21,7 +21,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>10</java.version>
+        <maven.compiler.source>10</maven.compiler.source>
+        <maven.compiler.target>10</maven.compiler.target>
+
         <springfox.swagger.version>2.9.2</springfox.swagger.version>
         <lombok.version>1.18.2</lombok.version>
         <selma.version>1.0</selma.version>
@@ -59,7 +62,13 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-            <scope>provided</scope>
+        </dependency>
+
+        <!-- Necessary for PATCH requests -->
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-httpclient</artifactId>
+            <version>10.0.1</version>
         </dependency>
 
         <!-- Selma Object Mapper -->
@@ -91,7 +100,7 @@
         <dependency>
             <groupId>edu.kit.tm.cm</groupId>
             <artifactId>ms-utils</artifactId>
-            <version>0.2</version>
+            <version>0.4</version>
         </dependency>
 
         <!-- Java 9+ compatibility -->

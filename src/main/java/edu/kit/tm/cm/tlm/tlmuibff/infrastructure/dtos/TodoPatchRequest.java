@@ -1,26 +1,51 @@
 package edu.kit.tm.cm.tlm.tlmuibff.infrastructure.dtos;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * TodoCreateRequest
+ * TodoPatchRequest
  */
 @Validated
-@JsonInclude
-public class TodoCreateRequest {
+
+public class TodoPatchRequest {
+    @JsonProperty("position")
+    private Integer position = null;
+
     @JsonProperty("content")
     private String content = null;
+
+    @JsonProperty("done")
+    private Boolean done = null;
 
     @JsonProperty("description")
     private String description = null;
 
-    public TodoCreateRequest content(String content) {
+    public TodoPatchRequest position(Integer position) {
+        this.position = position;
+        return this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return position
+     **/
+    @ApiModelProperty(value = "")
+
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public TodoPatchRequest content(String content) {
         this.content = content;
         return this;
     }
@@ -30,8 +55,7 @@ public class TodoCreateRequest {
      *
      * @return content
      **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
+    @ApiModelProperty(value = "")
 
 
     public String getContent() {
@@ -42,7 +66,28 @@ public class TodoCreateRequest {
         this.content = content;
     }
 
-    public TodoCreateRequest description(String description) {
+    public TodoPatchRequest done(Boolean done) {
+        this.done = done;
+        return this;
+    }
+
+    /**
+     * Get done
+     *
+     * @return done
+     **/
+    @ApiModelProperty(value = "")
+
+
+    public Boolean isDone() {
+        return done;
+    }
+
+    public void setDone(Boolean done) {
+        this.done = done;
+    }
+
+    public TodoPatchRequest description(String description) {
         this.description = description;
         return this;
     }
@@ -52,8 +97,7 @@ public class TodoCreateRequest {
      *
      * @return description
      **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
+    @ApiModelProperty(value = "")
 
 
     public String getDescription() {
@@ -73,22 +117,26 @@ public class TodoCreateRequest {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TodoCreateRequest todoCreateRequest = (TodoCreateRequest) o;
-        return Objects.equals(this.content, todoCreateRequest.content) &&
-                Objects.equals(this.description, todoCreateRequest.description);
+        TodoPatchRequest todoPatchRequest = (TodoPatchRequest) o;
+        return Objects.equals(this.position, todoPatchRequest.position) &&
+                Objects.equals(this.content, todoPatchRequest.content) &&
+                Objects.equals(this.done, todoPatchRequest.done) &&
+                Objects.equals(this.description, todoPatchRequest.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content, description);
+        return Objects.hash(position, content, done, description);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TodoCreateRequest {\n");
+        sb.append("class TodoPatchRequest {\n");
 
+        sb.append("    position: ").append(toIndentedString(position)).append("\n");
         sb.append("    content: ").append(toIndentedString(content)).append("\n");
+        sb.append("    done: ").append(toIndentedString(done)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("}");
         return sb.toString();

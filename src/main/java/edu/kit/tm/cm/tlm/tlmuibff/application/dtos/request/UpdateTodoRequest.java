@@ -6,19 +6,24 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Data
 @ApiModel("Todo-UpdateRequest")
-public class TodoUpdateRequest {
+public class UpdateTodoRequest {
     @NotNull
-    @NotEmpty
     @ApiModelProperty(position = 1, required = true)
+    Integer position;
+
+    @NotEmpty
+    @ApiModelProperty(position = 2, required = true)
     String content;
 
     @NotNull
-    @ApiModelProperty(position = 2, required = true)
+    @ApiModelProperty(position = 3, required = true)
     Boolean done;
 
-    @ApiModelProperty(position = 3, notes = "Omit to delete description")
-    String description;
+    @NotNull
+    @ApiModelProperty(position = 4, required = true)
+    Optional<String> description;
 }

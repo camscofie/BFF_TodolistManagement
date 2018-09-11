@@ -1,23 +1,43 @@
 package edu.kit.tm.cm.tlm.tlmuibff.application.services;
 
-import edu.kit.tm.cm.tlm.tlmuibff.infrastructure.apis.TodoManagementApi;
+import edu.kit.tm.cm.tlm.tlmuibff.infrastructure.apis.TodoListsApiClient;
 import edu.kit.tm.cm.tlm.tlmuibff.infrastructure.dtos.*;
+import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class TodoListService {
 
-    private final TodoManagementApi todoManagementApi;
+    private final TodoListsApiClient todoManagementApi;
 
     @Autowired
-    public TodoListService(final TodoManagementApi todoManagementApi) {
+    public TodoListService(final TodoListsApiClient todoManagementApi) {
         this.todoManagementApi = todoManagementApi;
     }
 
-    public TodoList createTodoList(TodoListGenericRequest request) {
+    public List<TodoList> getTodoLists() {
+        return todoManagementApi.getTodoListsUsingGET().getBody();
+    }
+
+    public TodoListWithTodos getTodoList(Long id) {
+        CompletableFuture<ResponseEntity<TodoList>> todoList = CompletableFuture
+                .supplyAsync(() -> todoManagementApi.getTodoListUsingGET(id));
+        CompletableFuture<ResponseEntity<List<Todo>>> todos = CompletableFuture
+                .supplyAsync(() -> todoManagementApi.getTodosUsingGET(id));
+
+        return new TodoListWithTodos(todoList.join().getBody(), todos.join().getBody());
+    }
+
+    public Todo getTodo(Long listId, Integer number) {
+        return todoManagementApi.getTodoUsingGET(listId, number).getBody();
+    }
+
+    public TodoList createTodoList(TodoListCreateRequest request) {
         return todoManagementApi.createTodoListUsingPOST(request).getBody();
     }
 
@@ -25,20 +45,12 @@ public class TodoListService {
         return todoManagementApi.createTodoInListUsingPOST(id, request).getBody();
     }
 
-    public TodoList updateTodoList(Long id, TodoListGenericRequest request) {
-        return todoManagementApi.updateTodoListUsingPUT(id, request).getBody();
+    public Todo patchTodo(Long id, Integer number, TodoPatchRequest request) {
+        return todoManagementApi.patchTodoUsingPATCH(id, number, request).getBody();
     }
 
     public Todo updateTodo(Long id, Integer number, TodoUpdateRequest request) {
-        return todoManagementApi.updateTodoContentUsingPUT(id, number, request).getBody();
-    }
-
-    public Todo patchTodo(Long id, Integer number, TodoUpdateRequest request) {
-        return todoManagementApi.updateTodoContentUsingPUT(id, number, request).getBody();
-    }
-
-    public TodoList changeTodoOrder(Long id, List<Integer> newOrder) {
-        return null; // TODO: implement
+        return todoManagementApi.updateTodoUsingPUT(id, number, request).getBody();
     }
 
     public void deleteTodoList(Long id) {
@@ -49,40 +61,10 @@ public class TodoListService {
         todoManagementApi.deleteTodoFromListUsingDELETE(id, number);
     }
 
+    @Value
+    public class TodoListWithTodos {
+        private TodoList todoList;
+        private List<Todo> todos;
+    }
 
-//
-//    public TodoList getTodoList(Long id) {
-//        return this.api.getTodoListUsingGET(id).getBody();
-//    }
-//
-//    public Todo getTodo(Long id, Integer number) {
-//        return this.api.getTodoUsingGET(id, number).getBody();
-//    }
-//
-//    public TodoDto patchTodo(Long listId, Integer todoNumber, TodoPatchRequest request) {
-//        TodoList todoList = findTodoListById(listId);
-//        Todo todo = findTodoByTodoListAndNumber(todoList, todoNumber);
-//
-//        if (request.getContent() != null) {
-//            todoList.changeTodoContent(todo, request.getContent());
-//        }
-//
-//        if (request.getDone() != null) {
-//            if (request.getDone()) {
-//                todoList.finishTodo(todo);
-//            } else {
-//                todoList.resetTodoStatus(todo);
-//            }
-//        }
-//
-//        return todoRepository.findDtoByTodoListIdAndNumber(listId, todoNumber)
-//                .orElseThrow(todoNotFoundException(listId, todoNumber));
-//    }
-//
-//    public TodoListDto reorder(Long id, List<Integer> order) {
-//        TodoList todoList = findTodoListById(id);
-//        todoList.reorder(order);
-//
-//        return findTodoListDtoById(id);
-//    }
 }

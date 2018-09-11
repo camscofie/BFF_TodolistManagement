@@ -4,12 +4,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-@Data
-@ApiModel("Todo-PatchRequest")
-public class TodoPatchRequest {
-    @ApiModelProperty(position = 1)
-    String content;
+import javax.validation.constraints.NotEmpty;
 
-    @ApiModelProperty(position = 2)
-    Boolean done;
+@Data
+@ApiModel("Todo-CreateRequest")
+public class CreateTodoRequest {
+    @NotEmpty
+    @ApiModelProperty(position = 1, required = true)
+    String content;
 }

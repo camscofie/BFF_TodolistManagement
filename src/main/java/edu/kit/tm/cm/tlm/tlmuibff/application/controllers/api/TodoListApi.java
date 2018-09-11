@@ -1,9 +1,9 @@
 package edu.kit.tm.cm.tlm.tlmuibff.application.controllers.api;
 
-import edu.kit.tm.cm.tlm.tlmuibff.application.dtos.request.TodoCreateRequest;
-import edu.kit.tm.cm.tlm.tlmuibff.application.dtos.request.TodoListGenericRequest;
-import edu.kit.tm.cm.tlm.tlmuibff.application.dtos.request.TodoPatchRequest;
-import edu.kit.tm.cm.tlm.tlmuibff.application.dtos.request.TodoUpdateRequest;
+import edu.kit.tm.cm.tlm.tlmuibff.application.dtos.request.CreateTodoListRequest;
+import edu.kit.tm.cm.tlm.tlmuibff.application.dtos.request.CreateTodoRequest;
+import edu.kit.tm.cm.tlm.tlmuibff.application.dtos.request.PatchTodoRequest;
+import edu.kit.tm.cm.tlm.tlmuibff.application.dtos.request.UpdateTodoRequest;
 import edu.kit.tm.cm.tlm.tlmuibff.application.dtos.response.TodoListResponse;
 import edu.kit.tm.cm.tlm.tlmuibff.application.dtos.response.TodoResponse;
 import io.swagger.annotations.*;
@@ -40,59 +40,41 @@ public interface TodoListApi {
     @ApiResponses({
             @ApiResponse(code = 400, message = "Todo list was not valid")
     })
-    TodoListResponse createTodoList(@Valid @RequestBody TodoListGenericRequest newTodoList);
+    TodoListResponse createTodoList(@Valid @RequestBody CreateTodoListRequest newTodoList);
 
     @PostMapping("/{id}/todos")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Creates a new todo for a specific todo list", code = 201)
     @ApiResponses({
+            @ApiResponse(code = 400, message = "Todo was not valid"),
             @ApiResponse(code = 404, message = "Todo list not found"),
             @ApiResponse(code = 409, message = "Todo with the same content already exists in this list")
     })
-    TodoResponse createTodoInList(@PathVariable Long id, @RequestBody TodoCreateRequest newTodo);
-
-    @PutMapping("/{id}")
-    @ApiOperation(value = "Updates an existing todo list")
-    @ApiResponses({
-            @ApiResponse(code = 400, message = "Todo list was not valid"),
-            @ApiResponse(code = 404, message = "Todo list not found")
-    })
-    TodoListResponse updateTodoList(@PathVariable Long id,
-                                    @Valid @RequestBody TodoListGenericRequest updatedTodoList
-    );
+    TodoResponse createTodoInList(@PathVariable Long id, @Valid @RequestBody CreateTodoRequest newTodo);
 
     @PatchMapping("/{id}/todos/{number}")
     @ApiOperation(value = "Updates selected attributes of a specific todo")
     @ApiResponses({
+            @ApiResponse(code = 400, message = "Todo was not valid"),
             @ApiResponse(code = 404, message = "Todo list or todo not found"),
             @ApiResponse(code = 409, message = "Todo with the same content already exists in this list")
     })
     TodoResponse patchTodo(@PathVariable Long id,
                            @PathVariable Integer number,
                            @ApiParam(value = "A subset of the following attributes to update", required = true)
-                                          TodoPatchRequest updatedTodoAttributes
+                           @RequestBody PatchTodoRequest partialTodo
     );
 
     @PutMapping("/{id}/todos/{number}")
     @ApiOperation(value = "Updates a specific todo")
     @ApiResponses({
+            @ApiResponse(code = 400, message = "Todo was not valid"),
             @ApiResponse(code = 404, message = "Todo list or todo not found"),
             @ApiResponse(code = 409, message = "Todo with the same content already exists in this list")
     })
     TodoResponse updateTodo(@PathVariable Long id,
                             @PathVariable Integer number,
-                            @Valid @RequestBody TodoUpdateRequest updatedTodo
-    );
-
-    @PostMapping("/{id}/order")
-    @ApiOperation(value = "Reorders the todos in a list")
-    @ApiResponses({
-            @ApiResponse(code = 400, message = "Length of new positions was wrong"),
-            @ApiResponse(code = 404, message = "Todo list not found")
-    })
-    TodoListResponse changeTodoOrder(@PathVariable Long id,
-                                     @ApiParam(value = "A list of the new positions", required = true)
-                                         List<Integer> newOrder
+                            @Valid @RequestBody UpdateTodoRequest updatedTodo
     );
 
     @DeleteMapping("/{id}")

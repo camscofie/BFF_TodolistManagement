@@ -4,47 +4,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * TodoList
+ * TodoListPatchRequest
  */
 @Validated
 
-public class TodoList {
-    @JsonProperty("id")
-    private Long id = null;
-
+public class TodoListPatchRequest {
     @JsonProperty("title")
     private String title = null;
 
     @JsonProperty("color")
     private String color = null;
 
-    public TodoList id(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get id
-     *
-     * @return id
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public TodoList title(String title) {
+    public TodoListPatchRequest title(String title) {
         this.title = title;
         return this;
     }
@@ -54,8 +28,7 @@ public class TodoList {
      *
      * @return title
      **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
+    @ApiModelProperty(value = "")
 
 
     public String getTitle() {
@@ -66,7 +39,7 @@ public class TodoList {
         this.title = title;
     }
 
-    public TodoList color(String color) {
+    public TodoListPatchRequest color(String color) {
         this.color = color;
         return this;
     }
@@ -96,23 +69,21 @@ public class TodoList {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TodoList todoList = (TodoList) o;
-        return Objects.equals(this.id, todoList.id) &&
-                Objects.equals(this.title, todoList.title) &&
-                Objects.equals(this.color, todoList.color);
+        TodoListPatchRequest todoListPatchRequest = (TodoListPatchRequest) o;
+        return Objects.equals(this.title, todoListPatchRequest.title) &&
+                Objects.equals(this.color, todoListPatchRequest.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, color);
+        return Objects.hash(title, color);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TodoList {\n");
+        sb.append("class TodoListPatchRequest {\n");
 
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    title: ").append(toIndentedString(title)).append("\n");
         sb.append("    color: ").append(toIndentedString(color)).append("\n");
         sb.append("}");

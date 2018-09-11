@@ -3,5 +3,9 @@ server:
 spring:
   jackson:
     default-property-inclusion: non_null
+---
+
+spring:
+  profiles: docker
 todoManagementMicroservice:
   url: https://todo-management.cm.tm.kit.edu
