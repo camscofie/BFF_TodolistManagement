@@ -10,4 +10,5 @@ java -jar swagger-codegen-cli-2.3.1.jar generate \
   -c swagger-codegen.json \
   -Dmodels -Dapis
 ```
-After the code is generated, every DTO with non-optional fields (usually `Create`- and `UpdateRequests`) have to be annotated with `@JsonInclude`.
+After the code is generated, every DTO with non-optional fields (usually `Create`- and `UpdateRequests`) has to be annotated with `@JsonInclude`.
+Additionally, unused Apis and ApiClients should be removed and the invalid imports and possibly the microservice URL in the client have to be fixed.

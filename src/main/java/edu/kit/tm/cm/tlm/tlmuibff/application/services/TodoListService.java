@@ -21,7 +21,11 @@ public class TodoListService {
     }
 
     public List<TodoList> getTodoLists() {
-        return todoManagementApi.getTodoListsUsingGET().getBody();
+        List<TodoList> todoLists = todoManagementApi.getTodoListsUsingGET().getBody();
+        if (todoLists != null) {
+            todoLists.forEach(this::checkAndMarkTodoList);
+        }
+        return todoLists;
     }
 
     public TodoListWithTodos getTodoList(Long id) {
@@ -30,7 +34,10 @@ public class TodoListService {
         CompletableFuture<ResponseEntity<List<Todo>>> todos = CompletableFuture
                 .supplyAsync(() -> todoManagementApi.getTodosUsingGET(id));
 
-        return new TodoListWithTodos(todoList.join().getBody(), todos.join().getBody());
+        TodoListWithTodos todoListWithTodos = new TodoListWithTodos(todoList.join().getBody(), todos.join().getBody());
+        checkAndMarkTodoList(todoListWithTodos.getTodoList());
+
+        return todoListWithTodos;
     }
 
     public Todo getTodo(Long listId, Integer number) {
@@ -65,6 +72,12 @@ public class TodoListService {
     public class TodoListWithTodos {
         private TodoList todoList;
         private List<Todo> todos;
+    }
+
+    private void checkAndMarkTodoList(TodoList todoList) {
+        if (todoList != null && todoList.getTitle().contains("WASA")) {
+            todoList.setColor("#FF8A80");
+        }
     }
 
 }
