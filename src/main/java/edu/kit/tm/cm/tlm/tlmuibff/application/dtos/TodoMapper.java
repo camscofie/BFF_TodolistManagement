@@ -8,15 +8,15 @@ import edu.kit.tm.cm.tlm.tlmuibff.infrastructure.dtos.Todo;
 import edu.kit.tm.cm.tlm.tlmuibff.infrastructure.dtos.TodoCreateRequest;
 import edu.kit.tm.cm.tlm.tlmuibff.infrastructure.dtos.TodoPatchRequest;
 import edu.kit.tm.cm.tlm.tlmuibff.infrastructure.dtos.TodoUpdateRequest;
-import fr.xebia.extras.selma.IgnoreMissing;
-import fr.xebia.extras.selma.IoC;
-import fr.xebia.extras.selma.Mapper;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(withIoC = IoC.SPRING,
-        withIgnoreMissing = IgnoreMissing.ALL,
-        withCustom = CommonMapper.class)
+@Mapper(componentModel = "spring",
+        uses = CommonMapper.class,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
 public interface TodoMapper {
     TodoResponse toResponse(Todo todo);
     List<TodoResponse> toResponses(List<Todo> todo);
